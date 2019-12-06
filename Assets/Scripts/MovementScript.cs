@@ -47,6 +47,12 @@ public class MovementScript : MonoBehaviour {
         
         position += speed * Input.GetAxis("Horizontal") * Vector3.right +
                              speed * Input.GetAxis("Vertical") * Vector3.up;// + Vector3.up * zCoord;
+
+
+        if (Input.GetAxis("Horizontal") > 0) 
+            transform.localScale = Vector3.right+Vector3.forward+Vector3.up;
+        if (Input.GetAxis("Horizontal") < 0)
+            transform.localScale = Vector3.left+Vector3.forward+Vector3.up;
         transform.position = position;
 
     }
