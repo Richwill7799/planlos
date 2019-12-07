@@ -5,6 +5,7 @@
         _nColor ("Normal Color", Color) = (1,1,1,1)
         _wColor ("Water Color", Color) = (1,1,1,1)
         _eColor ("Edge Color", Color) = (1,1,1,1)
+        _EisTex ("Ice", 2D) = "white" {}
         [PerRendererData] _CrackTex ("Cracks", 2D) = "white" {}
     }
     SubShader
@@ -47,6 +48,7 @@
 			}
 
 			sampler2D _CrackTex;
+			sampler2D _EisTex;
 			float4 _nColor;
 			fixed4 _wColor;
 			fixed4 _eColor;
@@ -63,7 +65,7 @@
             }
 
 			fixed4 frag(v2f IN) : SV_Target {
-				return lerp(_nColor,
+				return lerp(tex2D(_EisTex, (IN.texcoord * float2(1.01, 1.05) + float2(-0.002,-0.027))),
 				lerp(_wColor,_eColor,
 				smoothstep(0.0f, 0.4f, getColor(IN.texcoord - float2(0.002, 0.01)))), 
 				smoothstep(0.0f, 0.4f, getColor(IN.texcoord)));
