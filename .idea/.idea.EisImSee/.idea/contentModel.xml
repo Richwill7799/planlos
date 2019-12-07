@@ -4,6 +4,9 @@
     <e p="C:\Data\unity\EisImSee" t="IncludeRecursive">
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
+        <e p="Materials" t="Include">
+          <e p="IceShader.shader" t="Include" />
+        </e>
         <e p="Scripts" t="Include">
           <e p="DebugMove.cs" t="Include" />
           <e p="Extensions.cs" t="Include" />
