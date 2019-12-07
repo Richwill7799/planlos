@@ -50,16 +50,17 @@ public class MovementScript : MonoBehaviour {
 
 
         if (Input.GetAxis("Horizontal") > 0) 
-            transform.localScale = new Vector3( 0.2f, 0.2f, 1);
+            transform.localScale = new Vector3( 1f, 1f, 1);
         if (Input.GetAxis("Horizontal") < 0)
-            transform.localScale = new Vector3(-0.2f, 0.2f, 1);
+            transform.localScale = new Vector3(-1f, 1f, 1);
         transform.position = position;
 
     }
 
     public Vector3 GetPosition()
     {
-        return transform.position + new Vector3(0.04f, -0.52f - zCoord, 0);
+        //return transform.position + new Vector3(0.04f, -0.52f - zCoord, 0);
+        return transform.position + new Vector3(0,  - zCoord, 0);
     }
 
     public bool IsAir()
