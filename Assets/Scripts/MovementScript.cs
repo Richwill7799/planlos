@@ -18,6 +18,7 @@ public class MovementScript : MonoBehaviour {
     private ParticleSystem.EmissionModule skatesParticlesEmission;
     private float zCoordDelta; //movement up or down
     private float lastJump;
+    private Rigidbody2D rigidbody;
     
     // Start is called before the first frame update
     void Start() {
@@ -26,6 +27,7 @@ public class MovementScript : MonoBehaviour {
 
         skatesParticles = this.GetComponentInChildren<ParticleSystem>();
         skatesParticlesEmission = skatesParticles.emission;
+        rigidbody = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
@@ -33,9 +35,10 @@ public class MovementScript : MonoBehaviour {
         
         if (dying) {
             skatesParticlesEmission.enabled = false;
+            rigidbody.drag += 100*Time.deltaTime;
 
             if (transform.position.z < 4f) {
-                //TODO add defeat screen here, change if clause a bit
+                //TODO add defeat screen here, change if clause parameters
                 Debug.Log("DEFEAT");
             }
                 
@@ -48,7 +51,7 @@ public class MovementScript : MonoBehaviour {
             Jump();
         }
         
-        var position = transform.position;
+        //var position = transform.position;
         if (zCoord > 0) {
             if (zCoordDelta > 0) {
                 zCoordDelta -= gravity*Time.deltaTime;
@@ -56,26 +59,28 @@ public class MovementScript : MonoBehaviour {
             else zCoordDelta -= gravity * 2*Time.deltaTime;
 
             zCoord += zCoordDelta*Time.deltaTime;
-            position += zCoordDelta * Time.deltaTime * Vector3.up;
+            transform.position += zCoordDelta * Time.deltaTime * Vector3.up;
         }
 
         if (zCoord <= 0) {
             skatesParticlesEmission.enabled = true;
-            position -= Vector3.up*zCoord;
+            transform.position -= Vector3.up*zCoord;
             zCoord = 0;
             zCoordDelta = 0;
         }
         //Jump stuff end ####
         
-        position += speed * Input.GetAxis("Horizontal") * Time.deltaTime * Vector3.right +
-                             speed * Input.GetAxis("Vertical") * Time.deltaTime * Vector3.up;// + Vector3.up * zCoord;
+        //transform.position += speed * Input.GetAxis("Horizontal") * Time.deltaTime * Vector3.right +
+            //                 speed * Input.GetAxis("Vertical") * Time.deltaTime * Vector3.up;// + Vector3.up * zCoord;
 
 
         if (Input.GetAxis("Horizontal") > 0) 
             transform.localScale = new Vector3( 1f, 1f, 1);
         if (Input.GetAxis("Horizontal") < 0)
             transform.localScale = new Vector3(-1f, 1f, 1);
-        transform.position = position;
+        rigidbody.AddForce(new Vector2(Input.GetAxis("Horizontal"),Input.GetAxis("Vertical")));
+        
+        //transform.position = position;
 
     }
 

@@ -194,7 +194,7 @@ public class IcePainter : MonoBehaviour
                 if (pixels[x + y * sizex] > 0 &&
                     (getPixel(x + 1, y) < 220 || getPixel(x, y - 1) < 220 ||
                      getPixel(x - 1, y) < 220 || getPixel(x, y + 1) < 220))
-                    pixels[x + y * sizex] = (byte)Math.Max(0, pixels[x + y * sizex] - 2);
+                    pixels[x + y * sizex] = (byte)Math.Max(0, pixels[x + y * sizex] - 1);
             }
         }
     }
