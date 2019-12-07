@@ -10,7 +10,10 @@
         <e p="Scripts" t="Include">
           <e p="DebugMove.cs" t="Include" />
           <e p="Extensions.cs" t="Include" />
+          <e p="Health.cs" t="Include" />
           <e p="IcePainter.cs" t="Include" />
+          <e p="MenuScript.cs" t="Include" />
+          <e p="MovementScript.cs" t="Include" />
         </e>
       </e>
       <e p="EisImSee.sln" t="IncludeFlat" />

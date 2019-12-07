@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 public class IcePainter : MonoBehaviour
 {
-    private const int size = 500;
+    private const int size = 250;
     
     
     public GameObject player;
@@ -57,8 +57,8 @@ public class IcePainter : MonoBehaviour
 
             while (dx != 0 || dy != 0)
             {
-                int i = Mathf.Clamp(nx, 0, size) + 
-                        Mathf.Clamp(ny, 0, size) * size;
+                int i = Mathf.Clamp(nx, 0, size - 1) + 
+                        Mathf.Clamp(ny, 0, size - 1) * size;
                      
                 flood |= pixels[i] > 0 && lastcomplete; 
                 lastcomplete = pixels[i] == 0;
@@ -96,7 +96,7 @@ public class IcePainter : MonoBehaviour
                     int y = c.Item2;
                     if (x < 0 || y < 0 || x >= size || y >= size)
                         continue;
-                    if (temp[x + y * size] || pixels[x + y * size] == 255) 
+                    if (temp[x + y * size] || pixels[x + y * size] > 20) 
                         continue;
         
                     //Debug.Log($"aiin {x} | {y}");
@@ -110,26 +110,51 @@ public class IcePainter : MonoBehaviour
                 
                 for (int j = 0; j < size * size; j++)
                 {
-                    if (!temp[j])
-                        pixels[j] = Math.Max(pixels[j], (byte)50);
+                    if (!temp[j] && pixels[j] == 0)
+                        pixels[j] = 255;
                 }
             }
             
         }
         
-        for (int j = 0; j < size * size; j++)
-        {
-            if (pixels[j] > 10 && pixels[j] < 250)
-                pixels[j] = (byte)Math.Min(pixels[j] + 1, 250);
-        }
+        //for (int j = 0; j < size * size; j++)
+        //{
+        //   if (pixels[j] > 0)
+        //        pixels[j]--;
+        //}
+        
+        
         
         texture.SetPixelData(pixels, 0);
         texture.Apply();
         
         oldpos = pc;
     }
+
+    public void FixedUpdate()
+    {
+        for (int x = 0; x < size; x++)
+        {
+            for (int y = 0; y < size; y++)
+            {
+                if (pixels[x + y * size] > 0 &&
+                    (getPixel(x + 1, y) < 220 || getPixel(x, y - 1) < 220 ||
+                     getPixel(x - 1, y) < 220 || getPixel(x, y + 1) < 220))
+                    pixels[x + y * size] = (byte)Math.Max(0, pixels[x + y * size] - 2);
+            }
+        }
+    }
+    
+    private byte getPixel(int x, int y)
+    {
+        if (x < 0 || y < 0 || x >= size || y >= size)
+            return 0;
+        return pixels[x + y * size];
+    }
     
     private bool[] temp = new bool[size * size];
     private Queue<(int, int)> fillqueue = new Queue<(int, int)>(size * 4 * 5);
     private static readonly int CrackTex = Shader.PropertyToID("_CrackTex");
+    
+    
 }

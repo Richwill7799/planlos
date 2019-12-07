@@ -17,13 +17,7 @@ public class DebugMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKey(KeyCode.W))
-            gameObject.transform.position += Time.deltaTime * speed * Vector3.up;
-        if(Input.GetKey(KeyCode.S))
-            gameObject.transform.position += Time.deltaTime * speed * Vector3.down;
-        if(Input.GetKey(KeyCode.A))
-            gameObject.transform.position += Time.deltaTime * speed * Vector3.left;
-        if(Input.GetKey(KeyCode.D))
-            gameObject.transform.position += Time.deltaTime * speed * Vector3.right;
+        gameObject.transform.position += Time.deltaTime * speed * Input.GetAxis("Vertical")   * Vector3.up;
+        gameObject.transform.position += Time.deltaTime * speed * Input.GetAxis("Horizontal") * Vector3.right;
     }
 }

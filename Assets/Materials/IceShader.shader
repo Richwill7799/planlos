@@ -51,14 +51,20 @@
 			fixed4 _wColor;
 			fixed4 _eColor;
 
+
+            float getColor(float2 texco){
+                const float d = 0.002;
+                return (tex2D(_CrackTex, texco + float2( d,  d)).a + 
+                        tex2D(_CrackTex, texco + float2(-d,  d)).a +
+                        tex2D(_CrackTex, texco + float2(-d, -d)).a + 
+                        tex2D(_CrackTex, texco + float2( d, -d)).a ) / 4;
+            }
+
 			fixed4 frag(v2f IN) : SV_Target {
-			    fixed4 c = _wColor;
-			    if(tex2D(_CrackTex, IN.texcoord + float2(0.01, -0.05)).a > 0.1){
-					c = _eColor;
-				}
-				
-				c = lerp(_nColor, c, tex2D(_CrackTex, IN.texcoord).a);
-				return c;
+				return lerp(_nColor,
+				lerp(_wColor,_eColor,
+				smoothstep(0.0f, 0.4f, getColor(IN.texcoord - float2(0.01, 0.05)))), 
+				smoothstep(0.0f, 0.4f, getColor(IN.texcoord)));
 			}
 		ENDCG
 		}
