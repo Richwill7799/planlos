@@ -6,17 +6,23 @@ public class MovementScript : MonoBehaviour {
     [Header("Jump Variables")]
     public float zCoord; //offset from floor
     public float startJumpHeight, gravity, cooldown; //start jump boost, downward force, time in sec between jumps
+
     [Space(10)]
     
     public float speed;
 
+
+    private ParticleSystem skatesParticles;
+    private ParticleSystem.EmissionModule skatesParticlesEmission;
     private float zCoordDelta; //movement up or down
     private float lastJump;
     
     // Start is called before the first frame update
     void Start() {
         zCoord = 0;
-        
+
+        skatesParticles = this.GetComponentInChildren<ParticleSystem>();
+        skatesParticlesEmission = skatesParticles.emission;
     }
 
     // Update is called once per frame
@@ -39,6 +45,7 @@ public class MovementScript : MonoBehaviour {
         }
 
         if (zCoord <= 0) {
+            skatesParticlesEmission.enabled = true;
             position -= Vector3.up*zCoord;
             zCoord = 0;
             zCoordDelta = 0;
@@ -74,6 +81,8 @@ public class MovementScript : MonoBehaviour {
     }
     
     private void Jump() {
+        
+        skatesParticlesEmission.enabled = false;
         zCoordDelta = startJumpHeight;
         transform.position += zCoordDelta * Time.deltaTime * Vector3.up;
         zCoord += zCoordDelta*Time.deltaTime;

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
+using Random = System.Random;
 
 public class IcePainter : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class IcePainter : MonoBehaviour
     
     
     public MovementScript player;
+
+    public ParticleSystem iceBurstSystem;
 
     public Texture2D stenciltex;
     private byte[] stencil;
@@ -162,10 +165,17 @@ public class IcePainter : MonoBehaviour
             fillqueue.Enqueue((x - 1, y));                   
         }
                 
+        var emitParams = new ParticleSystem.EmitParams();
+        
         for (int j = 0; j < sizex * sizey; j++)
         {
-            if (!temp[j] && stencil[j] == 0 && pixels[j] == 0)
+            if (!temp[j] && stencil[j] == 0 && pixels[j] == 0) {
                 pixels[j] = 255;
+                if (UnityEngine.Random.Range(0, 100) < 5) {
+                    emitParams.position = new Vector3((j % sizex) - sizex / 2, (j / sizex) - sizey / 2, 0) * -1 / 40;
+                    iceBurstSystem.Emit(emitParams, 1);
+                }
+            }
         }
     
 
@@ -174,6 +184,7 @@ public class IcePainter : MonoBehaviour
         yield return null;
     }
 
+    
     public void FixedUpdate()
     {
         for (int x = 0; x < sizex; x++)
