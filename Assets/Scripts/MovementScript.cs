@@ -30,12 +30,12 @@ public class MovementScript : MonoBehaviour {
         var position = transform.position;
         if (zCoord > 0) {
             if (zCoordDelta > 0) {
-                zCoordDelta -= gravity;
+                zCoordDelta -= gravity*Time.deltaTime;
             }
-            else zCoordDelta -= gravity * 2;
+            else zCoordDelta -= gravity * 2*Time.deltaTime;
 
-            zCoord += zCoordDelta;
-            position += Vector3.up * zCoordDelta;
+            zCoord += zCoordDelta*Time.deltaTime;
+            position += zCoordDelta * Time.deltaTime * Vector3.up;
         }
 
         if (zCoord <= 0) {
@@ -75,8 +75,8 @@ public class MovementScript : MonoBehaviour {
     
     private void Jump() {
         zCoordDelta = startJumpHeight;
-        transform.position += Vector3.up * zCoordDelta;
-        zCoord += zCoordDelta;
+        transform.position += zCoordDelta * Time.deltaTime * Vector3.up;
+        zCoord += zCoordDelta*Time.deltaTime;
 
         lastJump = Time.time;
     }
