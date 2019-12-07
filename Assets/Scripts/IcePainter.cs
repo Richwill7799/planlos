@@ -46,6 +46,16 @@ public class IcePainter : MonoBehaviour
     {
         (int, int) pc = GetPixelCoord();
 
+
+        if (!player.IsAir() &&
+            pixels[(pc.Item1 + 1) + (pc.Item2 + 1) * sizex] > 10 &&
+            pixels[(pc.Item1 - 1) + (pc.Item2 + 1) * sizex] > 10 &&
+            pixels[(pc.Item1 + 1) + (pc.Item2 - 1) * sizex] > 10 &&
+            pixels[(pc.Item1 - 1) + (pc.Item2 - 1) * sizex] > 10)
+        {
+            player.Death();
+        }
+        
         int dx = Math.Sign(pc.Item1 - oldpos.Item1);
         int dy = Math.Sign(pc.Item2 - oldpos.Item2);
 

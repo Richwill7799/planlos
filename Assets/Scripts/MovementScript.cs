@@ -66,6 +66,11 @@ public class MovementScript : MonoBehaviour {
     {
         return zCoord > 0;
     }
+
+    public void Death()
+    {
+        Debug.Log("HI IM DEAD!");
+    }
     
     private void Jump() {
         zCoordDelta = startJumpHeight;
