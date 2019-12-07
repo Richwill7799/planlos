@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using UnityEngine;
@@ -93,51 +94,12 @@ public class IcePainter : MonoBehaviour
                 ny += dy;
             }
 
-           
-            
-            if (flood)
+
+
+            if (flood && !corunning)
             {
-                Debug.Log("Start flood");
-                Array.Clear(temp, 0, temp.Length);
-                fillqueue.Clear();
-                for (int x = 0; x < sizex; x++)
-                {
-                    for (int y = 0; y < sizey; y++)
-                    {
-                        //if (x == 0 || y == 0 || x == sizex - 1 || y == sizey - 1)
-                        if(stencil[x + y * sizex] == 1)
-                        {
-                            fillqueue.Enqueue((x, y));
-                        }
-                    }
-                }
-
-                while (fillqueue.Count > 0)
-                {
-                    (int, int) c = fillqueue.Dequeue();
-                    int x = c.Item1;
-                    int y = c.Item2;
-                    if (x < 0 || y < 0 || x >= sizex || y >= sizey)
-                        continue;
-                    if (stencil[x + y * sizex] == 2 || temp[x + y * sizex] || pixels[x + y * sizex] > 20) 
-                        continue;
-        
-                    //Debug.Log($"aiin {x} | {y}");
-                    temp[x + y * sizex] = true;
-
-                    fillqueue.Enqueue((x, y + 1));
-                    fillqueue.Enqueue((x + 1, y)); 
-                    fillqueue.Enqueue((x, y - 1)); 
-                    fillqueue.Enqueue((x - 1, y));                   
-                }
-                
-                for (int j = 0; j < sizex * sizey; j++)
-                {
-                    if (!temp[j] && stencil[j] == 0 && pixels[j] == 0)
-                        pixels[j] = 255;
-                }
+                StartCoroutine(Search());
             }
-            
         }
         
         //for (int j = 0; j < size * size; j++)
@@ -152,6 +114,64 @@ public class IcePainter : MonoBehaviour
         texture.Apply();
         
         oldpos = pc;
+    }
+
+    private IEnumerator Search()
+    {
+        corunning = true;
+        Debug.Log("Start flood");
+        Array.Clear(temp, 0, temp.Length);
+        fillqueue.Clear();
+        for (int x = 0; x < sizex; x++)
+        {
+            for (int y = 0; y < sizey; y++)
+            {
+                //if (x == 0 || y == 0 || x == sizex - 1 || y == sizey - 1)
+                if(stencil[x + y * sizex] == 1)
+                {
+                    fillqueue.Enqueue((x, y));
+                }
+            }
+        }
+
+        yield return null;
+
+        int remt = 10000;
+        
+        while (fillqueue.Count > 0)
+        {
+            if (--remt == 0)
+            {
+                remt = 10000;
+                yield return null;
+            }
+            (int, int) c = fillqueue.Dequeue();
+            int x = c.Item1;
+            int y = c.Item2;
+            if (x < 0 || y < 0 || x >= sizex || y >= sizey)
+                continue;
+            if (stencil[x + y * sizex] == 2 || temp[x + y * sizex] || pixels[x + y * sizex] > 20) 
+                continue;
+        
+            //Debug.Log($"aiin {x} | {y}");
+            temp[x + y * sizex] = true;
+
+            fillqueue.Enqueue((x, y + 1));
+            fillqueue.Enqueue((x + 1, y)); 
+            fillqueue.Enqueue((x, y - 1)); 
+            fillqueue.Enqueue((x - 1, y));                   
+        }
+                
+        for (int j = 0; j < sizex * sizey; j++)
+        {
+            if (!temp[j] && stencil[j] == 0 && pixels[j] == 0)
+                pixels[j] = 255;
+        }
+    
+
+        corunning = false;
+        
+        yield return null;
     }
 
     public void FixedUpdate()
@@ -177,6 +197,7 @@ public class IcePainter : MonoBehaviour
     
     private bool[] temp = new bool[sizex * sizey];
     private Queue<(int, int)> fillqueue = new Queue<(int, int)>((sizex + sizey) * 2 * 5);
+    private bool corunning = false;
     private static readonly int CrackTex = Shader.PropertyToID("_CrackTex");
     
     
