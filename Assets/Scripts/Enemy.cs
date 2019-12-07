@@ -13,9 +13,11 @@ public class Enemy : MonoBehaviour
     Vector2 goalPos;
     Vector2 position;
     float distance;
+    IcePainter icebabyyyyyyy;
 
     private void Awake()
     {
+        icebabyyyyyyy = FindObjectOfType<IcePainter>();
         rigidbody2D = GetComponent<Rigidbody2D>();
         rigidbody2Dgoal = goal.GetComponent<Rigidbody2D>();
     }
@@ -45,6 +47,8 @@ public class Enemy : MonoBehaviour
         //move penguin
         position += Time.deltaTime * direction * speed;
         rigidbody2D.MovePosition(position);
+        if(icebabyyyyyyy.IsHole(position))
+            Destroy(gameObject);
     }
     
 
