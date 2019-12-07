@@ -14,6 +14,7 @@ public class Goal : MonoBehaviour
     void Start()
     {
         currentHealth = maxHealth;
+        healthSlider.SetValue(currentHealth / maxHealth);
     }
 
     // Update is called once per frame

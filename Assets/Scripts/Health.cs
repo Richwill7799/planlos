@@ -22,6 +22,8 @@ public class Health : MonoBehaviour
 
     public void SetValue(float value)
     {
+        
         slider.value = Mathf.MoveTowards(slider.value, value, 10f);
+        Debug.Log("update health value: " + slider.value);
     }
 }
