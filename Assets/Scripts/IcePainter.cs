@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 
@@ -11,6 +12,9 @@ public class IcePainter : MonoBehaviour
     
     public MovementScript player;
 
+    public Texture2D stenciltex;
+    private byte[] stencil;
+    
     private Material material;
     private Texture2D texture;
     private (int, int) oldpos;
@@ -22,11 +26,18 @@ public class IcePainter : MonoBehaviour
         texture = new Texture2D(sizex, sizey, TextureFormat.Alpha8, false);
         texture.filterMode = FilterMode.Bilinear;
         pixels = new byte[sizex * sizey];
+        stencil = new byte[sizex * sizey];
         for (int i = 0; i < sizex; i++)
         {
             for (int j = 0; j < sizey; j++)
             {
                 pixels[i + j * sizex] = 0;
+                if(stenciltex.GetPixel(i, j).r > 0.9)
+                    stencil[i + j * sizex] = 0;
+                else if(stenciltex.GetPixel(i, j).r < 0.1)
+                    stencil[i + j * sizex] = 2;
+                else
+                    stencil[i + j * sizex] = 1;
             }
         }
         texture.SetPixelData(pixels, 0);
@@ -93,7 +104,8 @@ public class IcePainter : MonoBehaviour
                 {
                     for (int y = 0; y < sizey; y++)
                     {
-                        if (x == 0 || y == 0 || x == sizex - 1 || y == sizey - 1)
+                        //if (x == 0 || y == 0 || x == sizex - 1 || y == sizey - 1)
+                        if(stencil[x + y * sizex] == 1)
                         {
                             fillqueue.Enqueue((x, y));
                         }
@@ -107,7 +119,7 @@ public class IcePainter : MonoBehaviour
                     int y = c.Item2;
                     if (x < 0 || y < 0 || x >= sizex || y >= sizey)
                         continue;
-                    if (temp[x + y * sizex] || pixels[x + y * sizex] > 20) 
+                    if (stencil[x + y * sizex] == 2 || temp[x + y * sizex] || pixels[x + y * sizex] > 20) 
                         continue;
         
                     //Debug.Log($"aiin {x} | {y}");
@@ -121,7 +133,7 @@ public class IcePainter : MonoBehaviour
                 
                 for (int j = 0; j < sizex * sizey; j++)
                 {
-                    if (!temp[j] && pixels[j] == 0)
+                    if (!temp[j] && stencil[j] == 0 && pixels[j] == 0)
                         pixels[j] = 255;
                 }
             }
