@@ -78,8 +78,9 @@ public class MovementScript : MonoBehaviour {
     public void Death()
     {
         Debug.Log("HI IM DEAD!");
+        transform.position += Vector3.back;
     }
-    
+
     private void Jump() {
         
         skatesParticlesEmission.enabled = false;
