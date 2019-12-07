@@ -12,6 +12,8 @@ public class MovementScript : MonoBehaviour {
     public float speed;
 
 
+    private bool dying;
+    
     private ParticleSystem skatesParticles;
     private ParticleSystem.EmissionModule skatesParticlesEmission;
     private float zCoordDelta; //movement up or down
@@ -20,6 +22,7 @@ public class MovementScript : MonoBehaviour {
     // Start is called before the first frame update
     void Start() {
         zCoord = 0;
+        dying = false;
 
         skatesParticles = this.GetComponentInChildren<ParticleSystem>();
         skatesParticlesEmission = skatesParticles.emission;
@@ -28,6 +31,18 @@ public class MovementScript : MonoBehaviour {
     // Update is called once per frame
     void Update() {
         
+        if (dying) {
+            skatesParticlesEmission.enabled = false;
+
+            if (transform.position.z < 4f) {
+                //TODO add defeat screen here, change if clause a bit
+                Debug.Log("DEFEAT");
+            }
+                
+            transform.position += Vector3.back * Time.deltaTime + Vector3.down*Time.deltaTime;
+            return;
+        }
+        //Debug.Log("dying? "+Time.deltaTime);
         //Jump stuff ####
         if (zCoord <= 0 && Input.GetAxis("Jump") >= 0.8 && lastJump+cooldown<Time.time) {
             Jump();
@@ -72,14 +87,17 @@ public class MovementScript : MonoBehaviour {
 
     public bool IsAir()
     {
-        return zCoord > 0;
+        return zCoord > 0||dying;
     }
 
-    public void Death()
-    {
-        Debug.Log("HI IM DEAD!");
-        transform.position += Vector3.back;
+    public void Death() {
+        dying = true;
+        //Debug.Log("HI IM DEAD!");
+        //transform.position += Vector3.back;
     }
+
+    public bool Dying => dying;
+
 
     private void Jump() {
         
