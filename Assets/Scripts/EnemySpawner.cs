@@ -6,24 +6,22 @@ public class EnemySpawner : MonoBehaviour
     public GameObject penguin;
     public float spawnRate = 1f;
 
-    float timer;
+    float lastSpawn;
 
 
     // Start is called before the first frame update
-    void Start()
-    {
+    void Start() {
 
-        timer = spawnRate;
+        lastSpawn = Time.time;
     }
 
     // Update is called once per frame
     void Update()
     {
-        timer -= Time.deltaTime;
-        if (timer < 0)
-        {
+
+        if (Time.time - lastSpawn >= spawnRate+Random.Range(0,7)) {
+            lastSpawn = Time.time;
             Instantiate(penguin, transform.position, Quaternion.identity);
-            timer = spawnRate; 
         }
     }
 }

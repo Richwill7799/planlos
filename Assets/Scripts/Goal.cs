@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,7 +15,6 @@ public class Goal : MonoBehaviour
     void Start()
     {
         currentHealth = maxHealth;
-        healthSlider.SetValue(currentHealth / maxHealth);
     }
 
     // Update is called once per frame
@@ -23,9 +23,9 @@ public class Goal : MonoBehaviour
         
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerEnter2D(Collider2D other1)
     {
-        Enemy enemy = other.gameObject.GetComponent<Enemy>();
+        Enemy enemy = other1.gameObject.GetComponent<Enemy>();
         //Debug.Log("Collision with: " + enemy);
         if (enemy != null)
         {
@@ -37,5 +37,9 @@ public class Goal : MonoBehaviour
             healthSlider.SetValue(currentHealth / maxHealth);
             Debug.Log("Here is my health!" + Health.instance);
         }
+    }
+
+    private void OnTriggerEnter(Collider other) {
+        throw new NotImplementedException();
     }
 }
