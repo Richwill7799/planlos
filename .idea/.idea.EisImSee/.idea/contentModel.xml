@@ -8,6 +8,7 @@
           <e p="IceShader.shader" t="Include" />
         </e>
         <e p="Scripts" t="Include">
+          <e p="CameraFollower.cs" t="Include" />
           <e p="DebugMove.cs" t="Include" />
           <e p="Extensions.cs" t="Include" />
           <e p="Health.cs" t="Include" />

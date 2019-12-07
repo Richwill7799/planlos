@@ -45,18 +45,28 @@ public class MovementScript : MonoBehaviour {
         }
         //Jump stuff end ####
         
-        position += speed * Input.GetAxis("Horizontal") * Vector3.right +
-                             speed * Input.GetAxis("Vertical") * Vector3.up;// + Vector3.up * zCoord;
+        position += speed * Input.GetAxis("Horizontal") * Time.deltaTime * Vector3.right +
+                             speed * Input.GetAxis("Vertical") * Time.deltaTime * Vector3.up;// + Vector3.up * zCoord;
 
 
         if (Input.GetAxis("Horizontal") > 0) 
-            transform.localScale = Vector3.right+Vector3.forward+Vector3.up;
+            transform.localScale = new Vector3( 0.2f, 0.2f, 1);
         if (Input.GetAxis("Horizontal") < 0)
-            transform.localScale = Vector3.left+Vector3.forward+Vector3.up;
+            transform.localScale = new Vector3(-0.2f, 0.2f, 1);
         transform.position = position;
 
     }
 
+    public Vector3 GetPosition()
+    {
+        return transform.position + new Vector3(0.04f, -0.52f - zCoord, 0);
+    }
+
+    public bool IsAir()
+    {
+        return zCoord > 0;
+    }
+    
     private void Jump() {
         zCoordDelta = startJumpHeight;
         transform.position += Vector3.up * zCoordDelta;

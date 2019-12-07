@@ -5,10 +5,11 @@ using UnityEngine.PlayerLoop;
 
 public class IcePainter : MonoBehaviour
 {
-    private const int size = 250;
+    private const int sizex = 640;
+    private const int sizey = 400;
     
     
-    public GameObject player;
+    public MovementScript player;
 
     private Material material;
     private Texture2D texture;
@@ -18,14 +19,14 @@ public class IcePainter : MonoBehaviour
 
     void Start()
     {
-        texture = new Texture2D(size, size, TextureFormat.Alpha8, false);
+        texture = new Texture2D(sizex, sizey, TextureFormat.Alpha8, false);
         texture.filterMode = FilterMode.Bilinear;
-        pixels = new byte[size * size];
-        for (int i = 0; i < size; i++)
+        pixels = new byte[sizex * sizey];
+        for (int i = 0; i < sizex; i++)
         {
-            for (int j = 0; j < size; j++)
+            for (int j = 0; j < sizey; j++)
             {
-                pixels[i + j * size] = 0;
+                pixels[i + j * sizex] = 0;
             }
         }
         texture.SetPixelData(pixels, 0);
@@ -38,7 +39,7 @@ public class IcePainter : MonoBehaviour
         oldpos = GetPixelCoord();
     }
 
-    private (int, int) GetPixelCoord() => ((player.transform.position - transform.position).Div(transform.localScale * 5)).Xy().ToPixel(size / 2, size / 2);
+    private (int, int) GetPixelCoord() => ((player.GetPosition() - transform.position).Div(transform.localScale * 5)).Xy().ToPixel(sizex / 2, sizey / 2);
     
     // Update is called once per frame
     void Update()
@@ -48,7 +49,7 @@ public class IcePainter : MonoBehaviour
         int dx = Math.Sign(pc.Item1 - oldpos.Item1);
         int dy = Math.Sign(pc.Item2 - oldpos.Item2);
 
-        if (dx != 0 || dy != 0)
+        if ((dx != 0 || dy != 0) && !player.IsAir())
         {
             bool flood = false;
 
@@ -57,8 +58,8 @@ public class IcePainter : MonoBehaviour
 
             while (dx != 0 || dy != 0)
             {
-                int i = Mathf.Clamp(nx, 0, size - 1) + 
-                        Mathf.Clamp(ny, 0, size - 1) * size;
+                int i = Mathf.Clamp(nx, 0, sizex - 1) + 
+                        Mathf.Clamp(ny, 0, sizey - 1) * sizex;
                      
                 flood |= pixels[i] > 0 && lastcomplete; 
                 lastcomplete = pixels[i] == 0;
@@ -78,11 +79,11 @@ public class IcePainter : MonoBehaviour
                 Debug.Log("Start flood");
                 Array.Clear(temp, 0, temp.Length);
                 fillqueue.Clear();
-                for (int x = 0; x < size; x++)
+                for (int x = 0; x < sizex; x++)
                 {
-                    for (int y = 0; y < size; y++)
+                    for (int y = 0; y < sizey; y++)
                     {
-                        if (x == 0 || y == 0 || x == size - 1 || y == size - 1)
+                        if (x == 0 || y == 0 || x == sizex - 1 || y == sizey - 1)
                         {
                             fillqueue.Enqueue((x, y));
                         }
@@ -94,13 +95,13 @@ public class IcePainter : MonoBehaviour
                     (int, int) c = fillqueue.Dequeue();
                     int x = c.Item1;
                     int y = c.Item2;
-                    if (x < 0 || y < 0 || x >= size || y >= size)
+                    if (x < 0 || y < 0 || x >= sizex || y >= sizey)
                         continue;
-                    if (temp[x + y * size] || pixels[x + y * size] > 20) 
+                    if (temp[x + y * sizex] || pixels[x + y * sizex] > 20) 
                         continue;
         
                     //Debug.Log($"aiin {x} | {y}");
-                    temp[x + y * size] = true;
+                    temp[x + y * sizex] = true;
 
                     fillqueue.Enqueue((x, y + 1));
                     fillqueue.Enqueue((x + 1, y)); 
@@ -108,7 +109,7 @@ public class IcePainter : MonoBehaviour
                     fillqueue.Enqueue((x - 1, y));                   
                 }
                 
-                for (int j = 0; j < size * size; j++)
+                for (int j = 0; j < sizex * sizey; j++)
                 {
                     if (!temp[j] && pixels[j] == 0)
                         pixels[j] = 255;
@@ -133,27 +134,27 @@ public class IcePainter : MonoBehaviour
 
     public void FixedUpdate()
     {
-        for (int x = 0; x < size; x++)
+        for (int x = 0; x < sizex; x++)
         {
-            for (int y = 0; y < size; y++)
+            for (int y = 0; y < sizey; y++)
             {
-                if (pixels[x + y * size] > 0 &&
+                if (pixels[x + y * sizex] > 0 &&
                     (getPixel(x + 1, y) < 220 || getPixel(x, y - 1) < 220 ||
                      getPixel(x - 1, y) < 220 || getPixel(x, y + 1) < 220))
-                    pixels[x + y * size] = (byte)Math.Max(0, pixels[x + y * size] - 2);
+                    pixels[x + y * sizex] = (byte)Math.Max(0, pixels[x + y * sizex] - 2);
             }
         }
     }
     
     private byte getPixel(int x, int y)
     {
-        if (x < 0 || y < 0 || x >= size || y >= size)
+        if (x < 0 || y < 0 || x >= sizex || y >= sizey)
             return 0;
-        return pixels[x + y * size];
+        return pixels[x + y * sizex];
     }
     
-    private bool[] temp = new bool[size * size];
-    private Queue<(int, int)> fillqueue = new Queue<(int, int)>(size * 4 * 5);
+    private bool[] temp = new bool[sizex * sizey];
+    private Queue<(int, int)> fillqueue = new Queue<(int, int)>((sizex + sizey) * 2 * 5);
     private static readonly int CrackTex = Shader.PropertyToID("_CrackTex");
     
     
