@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class Health : MonoBehaviour
 {
     public static Health instance { get; private set; }
+
     public Slider slider;
     // Start is called before the first frame update
     void Start()
@@ -21,6 +22,6 @@ public class Health : MonoBehaviour
 
     public void SetValue(float value)
     {
-        slider.value = Mathf.MoveTowards(slider.value, slider.value - value, 0.001f);
+        slider.value = Mathf.MoveTowards(slider.value, value, 10f);
     }
 }

@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Goal : MonoBehaviour
 {
     public float maxHealth;
+    public Health healthSlider;
 
     float currentHealth;
 
@@ -23,14 +25,16 @@ public class Goal : MonoBehaviour
     void OnCollisionEnter2D(Collision2D other)
     {
         Enemy enemy = other.gameObject.GetComponent<Enemy>();
-        Debug.Log("Collision with: " + enemy);
+        //Debug.Log("Collision with: " + enemy);
         if (enemy != null)
         {
             currentHealth -= 10f;
-            Health.instance.SetValue(currentHealth / maxHealth);
-
-            Debug.Log("It's not null!" + enemy.gameObject);
             Destroy(enemy.gameObject);
+
+            Debug.Log("Where is my health?" + Health.instance);
+            //Health.instance.SetValue();
+            healthSlider.SetValue(currentHealth / maxHealth);
+            Debug.Log("Here is my health!" + Health.instance);
         }
     }
 }

@@ -97,7 +97,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   goal: {fileID: 4358473528276097159, guid: 17a576ef42655b8488d2e8c34dff5058, type: 3}
-  speed: 0.36
+  speed: 1
 --- !u!50 &8562986737393565979
 Rigidbody2D:
   serializedVersion: 4
