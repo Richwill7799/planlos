@@ -22,7 +22,7 @@ public class EnemySpawner : MonoBehaviour
         timer -= Time.deltaTime;
         if (timer < 0)
         {
-            Instantiate(penguin);
+            Instantiate(penguin, transform.position, Quaternion.identity);
             timer = spawnRate; 
         }
     }
