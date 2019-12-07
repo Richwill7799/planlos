@@ -55,6 +55,16 @@ public class IcePainter : MonoBehaviour
     }
 
     private (int, int) GetPixelCoord() => ((player.GetPosition() - transform.position).Div(transform.localScale * 5)).Xy().ToPixel(sizex / 2, sizey / 2);
+
+    public bool IsHole(Vector3 vector3)
+    {
+        (int, int) pc = ((vector3 - transform.position).Div(transform.localScale * 5)).Xy().ToPixel(sizex / 2, sizey / 2);
+        
+        return pixels[(pc.Item1 + 1) + (pc.Item2 + 1) * sizex] > 10 &&
+               pixels[(pc.Item1 - 1) + (pc.Item2 + 1) * sizex] > 10 &&
+               pixels[(pc.Item1 + 1) + (pc.Item2 - 1) * sizex] > 10 &&
+               pixels[(pc.Item1 - 1) + (pc.Item2 - 1) * sizex] > 10;
+    }
     
     // Update is called once per frame
     void Update()
