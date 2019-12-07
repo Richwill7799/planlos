@@ -42,13 +42,17 @@ public class Enemy : MonoBehaviour
         distance = Vector2.Distance(position, goalPos);
 
         direction = (goalPos - position) / distance;
-        Debug.Log("Direction: " + direction);
+        //Debug.Log("Direction: " + direction);
 
         //move penguin
         position += Time.deltaTime * direction * speed;
         rigidbody2D.MovePosition(position);
-        if(icebabyyyyyyy.IsHole(position))
+        
+        if (icebabyyyyyyy.IsHole(position)) {
+            FindObjectOfType<Goal>().IncreaseScore();
+
             Destroy(gameObject);
+        }
     }
     
 

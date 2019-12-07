@@ -9,7 +9,12 @@ public class Goal : MonoBehaviour
     public float maxHealth;
     public Health healthSlider;
 
+    public Text text;
+    
     float currentHealth;
+
+    private int score;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -32,11 +37,16 @@ public class Goal : MonoBehaviour
             currentHealth -= 10f;
             Destroy(enemy.gameObject);
 
-            Debug.Log("Where is my health?" + Health.instance);
+            //Debug.Log("Where is my health?" + Health.instance);
             //Health.instance.SetValue();
             healthSlider.SetValue(currentHealth / maxHealth);
-            Debug.Log("Here is my health!" + Health.instance);
+            Debug.Log("Here is my health! " + currentHealth / maxHealth);
         }
+    }
+
+    public void IncreaseScore() {
+        score++;
+        text.text = "Score: " + score;
     }
 
     private void OnTriggerEnter(Collider other) {
