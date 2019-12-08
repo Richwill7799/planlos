@@ -89,7 +89,7 @@ public class MovementScript : MonoBehaviour {
 
         rigidbody.AddForce(Time.deltaTime * speed * new Vector2(Input.GetAxis("Horizontal"),Input.GetAxis("Vertical")));
         
-        aus.volume = Mathf.SmoothStep(0.0f, 0.7f, rigidbody.velocity.magnitude * 0.4f);
+        aus.volume = Mathf.SmoothStep(0.0f, 1.0f, rigidbody.velocity.magnitude * 0.5f);
         aus.mute = IsAir();
 
         //transform.position = position;
