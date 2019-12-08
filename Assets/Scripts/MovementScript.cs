@@ -22,9 +22,13 @@ public class MovementScript : MonoBehaviour {
     private float lastJump;
     private Rigidbody2D rigidbody;
     private float deathtime;
+    private AudioSource aus;
     
     // Start is called before the first frame update
-    void Start() {
+    void Start()
+    {
+        aus = GetComponent<AudioSource>();
+        
         zCoord = 0;
         dying = false;
 
@@ -82,8 +86,12 @@ public class MovementScript : MonoBehaviour {
             transform.localScale = new Vector3( 1f, 1f, 1);
         if (Input.GetAxis("Horizontal") < 0)
             transform.localScale = new Vector3(-1f, 1f, 1);
+
         rigidbody.AddForce(Time.deltaTime * speed * new Vector2(Input.GetAxis("Horizontal"),Input.GetAxis("Vertical")));
         
+        aus.volume = Mathf.SmoothStep(0.0f, 1.0f, rigidbody.velocity.magnitude * 0.5f);
+        aus.mute = IsAir();
+
         //transform.position = position;
 
     }
