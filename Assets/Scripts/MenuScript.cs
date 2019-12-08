@@ -7,7 +7,7 @@ public class MenuScript : MonoBehaviour
 {
     public void ChangeScene()
     {
-        SceneManager.LoadScene("MainScene");
+        SceneManager.LoadScene("TestSimon");
     }
 
     public void Quit()
