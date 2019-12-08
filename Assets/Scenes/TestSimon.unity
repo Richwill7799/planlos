@@ -276,6 +276,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 74f68c35657d21247a1cb38acac6a767, type: 3}
+--- !u!114 &201058942 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6170739305913951763, guid: 17a576ef42655b8488d2e8c34dff5058,
+    type: 3}
+  m_PrefabInstance: {fileID: 580756675}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 598f1d69d41b7cd42a6076f2cdf7db3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &238473731
 GameObject:
   m_ObjectHideFlags: 0
@@ -3051,6 +3063,11 @@ PrefabInstance:
       propertyPath: startJumpHeight
       value: 2.96
       objectReference: {fileID: 0}
+    - target: {fileID: 4625437163940556568, guid: 97042ba344366c54cbbf4ed2503fea8a,
+        type: 3}
+      propertyPath: goal
+      value: 
+      objectReference: {fileID: 201058942}
     - target: {fileID: 4625437163940556569, guid: 97042ba344366c54cbbf4ed2503fea8a,
         type: 3}
       propertyPath: m_Name

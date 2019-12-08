@@ -43,13 +43,18 @@ public class Goal : MonoBehaviour
             healthSlider.SetValue(currentHealth / maxHealth);
             //Debug.Log("Here is my health! " + currentHealth / maxHealth);
             if (currentHealth <= 0f) {
-                if (PlayerPrefs.GetInt("highscore") < score) {
-                    PlayerPrefs.SetInt("highscore",score);
-                }
-
-                SceneManager.LoadScene("Menu");
+                GameOver();
             }
         }
+    }
+
+    public void GameOver() {
+        if (PlayerPrefs.GetInt("highscore") < score) {
+            PlayerPrefs.SetInt("highscore",score);
+        }
+        PlayerPrefs.SetInt("lastscore",score);
+
+        SceneManager.LoadScene("GameOverScene");
     }
 
     public void IncreaseScore() {

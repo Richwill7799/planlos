@@ -7,11 +7,12 @@ public class MovementScript : MonoBehaviour {
     [Header("Jump Variables")]
     public float zCoord; //offset from floor
     public float startJumpHeight, gravity, cooldown; //start jump boost, downward force, time in sec between jumps
-
+    
     [Space(10)]
     
     public float speed;
 
+    public Goal goal;
 
     private bool dying;
     
@@ -40,9 +41,9 @@ public class MovementScript : MonoBehaviour {
             rigidbody.drag += 100*Time.deltaTime;
 
             if (Time.time-deathtime > 4f) {
-                SceneManager.LoadScene("Menu");
-                //TODO add defeat screen here, change if clause parameters
-                //Debug.Log("DEFEAT");
+                goal.GameOver();
+                //SceneManager.LoadScene("Menu");
+                
             }
                 
             transform.position += Vector3.back * Time.deltaTime + Vector3.down*Time.deltaTime;
