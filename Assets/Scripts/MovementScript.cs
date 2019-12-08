@@ -86,8 +86,9 @@ public class MovementScript : MonoBehaviour {
             transform.localScale = new Vector3( 1f, 1f, 1);
         if (Input.GetAxis("Horizontal") < 0)
             transform.localScale = new Vector3(-1f, 1f, 1);
-        rigidbody.AddForce(new Vector2(Input.GetAxis("Horizontal"),Input.GetAxis("Vertical")));
 
+        rigidbody.AddForce(Time.deltaTime * speed * new Vector2(Input.GetAxis("Horizontal"),Input.GetAxis("Vertical")));
+        
         aus.volume = Mathf.SmoothStep(0.0f, 0.7f, rigidbody.velocity.magnitude * 0.4f);
         aus.mute = IsAir();
 

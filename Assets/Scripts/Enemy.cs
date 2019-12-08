@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,6 +15,7 @@ public class Enemy : MonoBehaviour
     Vector2 position;
     float distance;
     IcePainter icebabyyyyyyy;
+    private float lastPushed;
 
     private void Awake()
     {
@@ -35,25 +37,29 @@ public class Enemy : MonoBehaviour
         {
             Destroy(gameObject);
         }*/
+        if (Time.time - lastPushed >= 1f) {
 
-        //set movement direction
-        goalPos = rigidbody2Dgoal.position;
-        position = rigidbody2D.position;
-        distance = Vector2.Distance(position, goalPos);
+            //set movement direction
+            goalPos = rigidbody2Dgoal.position;
+            position = rigidbody2D.position;
+            distance = Vector2.Distance(position, goalPos);
 
-        direction = (goalPos - position) / distance;
-        //Debug.Log("Direction: " + direction);
+            direction = (goalPos - position) / distance;
+            //Debug.Log("Direction: " + direction);
 
-        //move penguin
-        position += Time.deltaTime * direction * speed;
-        rigidbody2D.MovePosition(position);
-        
+            //move penguin
+            position += Time.deltaTime * direction * speed;
+            rigidbody2D.MovePosition(position);
+        }
+
         if (icebabyyyyyyy.IsHole(position)) {
             FindObjectOfType<Goal>().IncreaseScore();
 
             Destroy(gameObject);
         }
     }
-    
 
+    private void OnCollisionEnter2D(Collision2D other) {
+        lastPushed = Time.time;
+    }
 }
