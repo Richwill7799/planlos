@@ -149,13 +149,13 @@ public class IcePainter : MonoBehaviour
 
         yield return null;
 
-        int remt = 10000;
+        int remt = 0;
         
         while (fillqueue.Count > 0)
         {
-            if (--remt == 0)
+            if (++remt == 60000)
             {
-                remt = 10000;
+                remt = 0;
                 yield return null;
             }
             (int, int) c = fillqueue.Dequeue();
