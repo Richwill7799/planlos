@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MovementScript : MonoBehaviour {
     [Header("Jump Variables")]
@@ -19,6 +20,7 @@ public class MovementScript : MonoBehaviour {
     private float zCoordDelta; //movement up or down
     private float lastJump;
     private Rigidbody2D rigidbody;
+    private float deathtime;
     
     // Start is called before the first frame update
     void Start() {
@@ -37,7 +39,8 @@ public class MovementScript : MonoBehaviour {
             skatesParticlesEmission.enabled = false;
             rigidbody.drag += 100*Time.deltaTime;
 
-            if (transform.position.z < 4f) {
+            if (Time.time-deathtime > 4f) {
+                SceneManager.LoadScene("Menu");
                 //TODO add defeat screen here, change if clause parameters
                 //Debug.Log("DEFEAT");
             }
@@ -97,6 +100,7 @@ public class MovementScript : MonoBehaviour {
 
     public void Death() {
         dying = true;
+        deathtime = Time.time;
         //Debug.Log("HI IM DEAD!");
         //transform.position += Vector3.back;
     }

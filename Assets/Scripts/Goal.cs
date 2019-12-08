@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Goal : MonoBehaviour
@@ -40,7 +41,14 @@ public class Goal : MonoBehaviour
             //Debug.Log("Where is my health?" + Health.instance);
             //Health.instance.SetValue();
             healthSlider.SetValue(currentHealth / maxHealth);
-            Debug.Log("Here is my health! " + currentHealth / maxHealth);
+            //Debug.Log("Here is my health! " + currentHealth / maxHealth);
+            if (currentHealth <= 0f) {
+                if (PlayerPrefs.GetInt("highscore") < score) {
+                    PlayerPrefs.SetInt("highscore",score);
+                }
+
+                SceneManager.LoadScene("Menu");
+            }
         }
     }
 

@@ -25,7 +25,7 @@ public class EnemySpawner : MonoBehaviour
         Vector3 spawnPos;
         
 
-        if (Time.time - lastSpawn >= spawnRate+Random.Range(0,7)) {
+        if (Time.time - lastSpawn >= spawnRate+Random.Range(0,20)) {
             if(selectSpawner == 0)
             {
                 lastSpawn = Time.time;
