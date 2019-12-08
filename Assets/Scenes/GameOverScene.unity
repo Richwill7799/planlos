@@ -301,7 +301,7 @@ GameObject:
   - component: {fileID: 758503924}
   - component: {fileID: 758503923}
   m_Layer: 5
-  m_Name: Text
+  m_Name: ScoreList
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -345,7 +345,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: 296863fe82d51d145824c37c88e0746d, type: 3}
     m_FontSize: 25
     m_FontStyle: 0
     m_BestFit: 0
@@ -869,7 +869,7 @@ GameObject:
   - component: {fileID: 1976141555}
   - component: {fileID: 1976141554}
   m_Layer: 5
-  m_Name: Button
+  m_Name: Highscore
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
