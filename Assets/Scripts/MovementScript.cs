@@ -39,7 +39,7 @@ public class MovementScript : MonoBehaviour {
 
             if (transform.position.z < 4f) {
                 //TODO add defeat screen here, change if clause parameters
-                Debug.Log("DEFEAT");
+                //Debug.Log("DEFEAT");
             }
                 
             transform.position += Vector3.back * Time.deltaTime + Vector3.down*Time.deltaTime;

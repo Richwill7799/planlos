@@ -60,10 +60,10 @@ public class IcePainter : MonoBehaviour
     {
         (int, int) pc = ((vector3 - transform.position).Div(transform.localScale * 5)).Xy().ToPixel(sizex / 2, sizey / 2);
         
-        return pixels[(pc.Item1 + 1) + (pc.Item2 + 1) * sizex] > 10 &&
-               pixels[(pc.Item1 - 1) + (pc.Item2 + 1) * sizex] > 10 &&
-               pixels[(pc.Item1 + 1) + (pc.Item2 - 1) * sizex] > 10 &&
-               pixels[(pc.Item1 - 1) + (pc.Item2 - 1) * sizex] > 10;
+        return getPixel(pc.Item1 + 1 , (pc.Item2 + 1) ) > 10 &&
+               getPixel(pc.Item1 + 1 , (pc.Item2 + 1) ) > 10 &&
+               getPixel(pc.Item1 + 1 , (pc.Item2 - 1) ) > 10 &&
+               getPixel(pc.Item1 + 1 , (pc.Item2 - 1) ) > 10;
     }
     
     // Update is called once per frame
