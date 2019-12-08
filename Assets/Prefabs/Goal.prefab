@@ -95,3 +95,4 @@ MonoBehaviour:
   maxHealth: 100
   healthSlider: {fileID: 5674979298339133051, guid: 318d88a102d5af742b7246585808f8e1,
     type: 3}
+  text: {fileID: 0}
